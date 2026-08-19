@@ -1,0 +1,4 @@
+interface:
+  display_name: "券商研报三条决策"
+  short_description: "将研报、公司报告和专家纪要压缩为三条可执行投资判断"
+  default_prompt: "使用 $broker-report-decisions 分析我上传的研究材料，提炼三条可验证的投资判断。"
