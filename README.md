@@ -201,17 +201,6 @@ GitHub Actions 会在 push 和 pull request 时重复执行校验。
 
 本仓库中的 `yiyan`、`domain-cornerstone`、`company-one-pager`、`laoqian-chart` 和 `event-driven-investment-circles` 根据用户提供的材料及知识星球原帖整理，并按 Agent Skills 规范重构为可复用工作流。`industry-chain-investment-map` 根据多篇公众号产业链文章归纳其共同研究方法，再抽象为通用 Skill。
 
-仓库只保存方法抽象和重新组织后的 Skill 指令，不收录外部文章、研报或付费内容原文。参考链接用于说明方法来源和方便追溯，其中部分页面需要原平台访问权限：
-
-- `yiyan`：<https://t.zsxq.com/ZnAEV>
-- `domain-cornerstone`：<https://t.zsxq.com/VHkjj>
-- `company-one-pager`：<https://t.zsxq.com/8Wmls>
-- `laoqian-chart`：<https://t.zsxq.com/MjSFZ>
-- `event-driven-investment-circles`：<https://t.zsxq.com/iGUNK>
-- `industry-chain-investment-map` 参考样例：<https://mp.weixin.qq.com/s/Fk9G7PdZHnk7FGIMAOGsTw>、<https://mp.weixin.qq.com/s/epv17_vfDuydZRGwEETDkw>、<https://mp.weixin.qq.com/s/TXX7AMnTiJPzqzWVji_Icg>、<https://mp.weixin.qq.com/s/4dmSdely0RbVKbQzwlcErw>、<https://mp.weixin.qq.com/s/xvpLNr29Nwodgoju6LtLvg>
-
-外部内容的版权归原作者或相应平台所有。使用、转载或商用外部原文时，应自行确认原作者许可和平台规则。
-
 ## 使用边界
 
 - 投资研究类 Skill 用于组织公开信息和研究思路，不构成个性化投资建议，也不保证结论、数据或市场判断持续有效。
