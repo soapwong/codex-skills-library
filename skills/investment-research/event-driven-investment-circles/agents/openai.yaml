@@ -1,0 +1,4 @@
+interface:
+  display_name: "事件驱动投资同心圆"
+  short_description: "把结构性事件映射为跨市场多空机会、情景概率、风险边界和证伪条件"
+  default_prompt: "使用 $event-driven-investment-circles 分析这个事件，并给出四层同心圆与可交易映射。"

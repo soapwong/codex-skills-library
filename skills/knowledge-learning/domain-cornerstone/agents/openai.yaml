@@ -1,0 +1,4 @@
+interface:
+  display_name: "领域基石构建者"
+  short_description: "从九个维度提炼一个领域中经时间检验、可长期复用的核心认知"
+  default_prompt: "使用 $domain-cornerstone 为我梳理一个领域的核心认知基石。"

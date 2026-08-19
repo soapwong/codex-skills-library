@@ -1,0 +1,4 @@
+interface:
+  display_name: "一言信息子弹"
+  short_description: "把播客逐字稿、视频文字稿或长文章蒸馏成冷静完整的信息子弹"
+  default_prompt: "使用 $yiyan 将我提供的长内容蒸馏成可独立发布的信息子弹。"
