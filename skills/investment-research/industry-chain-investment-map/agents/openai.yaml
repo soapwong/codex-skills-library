@@ -1,0 +1,4 @@
+interface:
+  display_name: "产业链投资地图"
+  short_description: "将产业主题映射为价值量、瓶颈环节、A股标的、主线和验证节点"
+  default_prompt: "使用 $industry-chain-investment-map 分析这个产业链，输出A股映射、投资主线、催化、风险和观察节点。"
