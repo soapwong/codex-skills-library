@@ -1,14 +1,18 @@
-# Codex Skills Library
+# Agent Skills Library
 
 [![Validate skills](https://github.com/soapwong/codex-skills-library/actions/workflows/validate-skills.yml/badge.svg)](https://github.com/soapwong/codex-skills-library/actions/workflows/validate-skills.yml)
 
-一个公开的个人 Codex Skill 库，用于沉淀可复用的投资研究、内容处理和知识学习工作流。每个 Skill 都是独立目录，可以单独安装、更新和版本管理。
+一个公开的个人 Agent Skills 库，用于沉淀可复用的投资研究、内容处理和知识学习工作流。每个 Skill 都采用开放的 [Agent Skills 规范](https://agentskills.io/specification)及 `SKILL.md` 目录格式，可以单独安装、更新和版本管理。
 
 这里保存的是方法、约束和输出框架，不包含研报原文、付费文章全文、客户资料或访问凭据。
 
 ## 快速开始
 
-直接告诉 Codex 要安装的公开仓库路径：
+完整的 Agent 兼容性、Windows/macOS 命令和平台差异见：
+
+> [跨 Agent 与跨平台使用指南](docs/agent-usage-guide.md)
+
+在 Codex 中，可以直接告诉它要安装的公开仓库路径：
 
 ```text
 请从 GitHub 仓库 soapwong/codex-skills-library 安装
@@ -26,6 +30,8 @@ skills/investment-research/industry-chain-investment-map。
 ```text
 使用 $industry-chain-investment-map 分析人形机器人产业链。
 ```
+
+ChatGPT Desktop/Work、Claude Code、Kimi Code CLI、Cursor、OpenCode、Gemini CLI 和 GitHub Copilot 也支持同一类 Skill。多数本地 Agent 可共用 `~/.agents/skills`；Claude Code、Kimi、WorkBuddy 和网页产品的差异见完整指南。
 
 ## 技能总览
 
@@ -95,6 +101,8 @@ skills/investment-research/industry-chain-investment-map。
 |       `-- domain-cornerstone/
 |-- scripts/
 |   `-- validate_skills.py
+|-- docs/
+|   `-- agent-usage-guide.md
 |-- .github/workflows/
 |   `-- validate-skills.yml
 |-- requirements-dev.txt
@@ -121,7 +129,7 @@ git clone git@github.com:soapwong/codex-skills-library.git
 
 仓库公开可读，HTTPS 克隆不需要 GitHub 登录。SSH 方式需要本机已经配置 GitHub SSH 密钥。
 
-## 安装 Skill
+## 使用与安装
 
 ### 让 Codex 从 GitHub 安装
 
@@ -134,56 +142,40 @@ skills/investment-research/company-one-pager 安装 Skill。
 
 安装多个 Skill 时，同时给出多个目录路径即可。
 
-### 克隆后手动安装单个 Skill
+### 手动安装到公共 Agent 目录
 
-在仓库根目录运行：
+Codex、Cursor、OpenCode、Gemini CLI 和 GitHub Copilot 都能读取 `~/.agents/skills`。在仓库根目录安装单个 Skill：
+
+Windows PowerShell：
 
 ```powershell
+$targetRoot = Join-Path $HOME '.agents\skills'
+New-Item -ItemType Directory -Force $targetRoot | Out-Null
 Copy-Item -Recurse `
-  .\skills\investment-research\company-one-pager `
-  "$env:USERPROFILE\.codex\skills\company-one-pager"
+  '.\skills\investment-research\company-one-pager' `
+  (Join-Path $targetRoot 'company-one-pager')
 ```
 
-### 克隆后批量安装全部 Skill
+macOS Terminal：
 
-下面的 PowerShell 会按 `SKILL.md` 所在目录逐个复制到 Codex 用户 Skill 目录。目标目录已存在时会停止，避免静默覆盖本机修改。
-
-```powershell
-$destinationRoot = Join-Path $env:USERPROFILE '.codex\skills'
-
-Get-ChildItem -Path '.\skills' -Filter 'SKILL.md' -Recurse | ForEach-Object {
-    $skillDirectory = $_.Directory
-    $destination = Join-Path $destinationRoot $skillDirectory.Name
-
-    if (Test-Path -LiteralPath $destination) {
-        throw "目标已存在，请先确认如何更新：$destination"
-    }
-
-    Copy-Item -LiteralPath $skillDirectory.FullName -Destination $destination -Recurse
-}
+```bash
+mkdir -p "$HOME/.agents/skills"
+cp -R \
+  skills/investment-research/company-one-pager \
+  "$HOME/.agents/skills/company-one-pager"
 ```
 
-新安装的 Skill 通常会在 Codex 的新任务中被发现。仓库副本和 `%USERPROFILE%\.codex\skills` 下的已安装副本彼此独立，执行 `git pull` 不会自动更新本机 Skill。
+Claude Code 使用 `~/.claude/skills`；Kimi Code CLI 推荐 `~/.config/agents/skills`，也支持公共目录 `~/.agents/skills`。WorkBuddy 推荐让产品读取 `SKILL.md` 后转换成自身格式。
 
-### 更新已安装的 Skill
+全部 Skill 的 Windows/macOS 批量命令、各 Agent 调用语法、WorkBuddy 转换提示词以及更新方法，见[跨 Agent 与跨平台使用指南](docs/agent-usage-guide.md)。
 
-先拉取仓库最新版本，再比较仓库目录与本机安装目录：
-
-```powershell
-git pull
-
-git diff --no-index -- `
-  .\skills\investment-research\company-one-pager `
-  "$env:USERPROFILE\.codex\skills\company-one-pager"
-```
-
-确认差异后，再让 Codex 从同一 GitHub 路径重新安装，或手动覆盖对应的单个 Skill 目录。覆盖前应保留本机自定义修改。
+通过复制安装时，`git pull` 只更新克隆仓库，不会自动更新 Agent 目录中的副本；覆盖前先比较并保留本机修改。
 
 ## 新增 Skill
 
 1. 使用 `skill-creator` 创建或规范 Skill，名称采用简短、清晰的 kebab-case。
 2. 按主要用途放入 `skills/<category>/<skill-name>/`。
-3. 保证入口文件为 `SKILL.md`，并添加与正文一致的 `agents/openai.yaml`。
+3. 保证入口文件为 `SKILL.md`；需要适配 OpenAI 产品界面时，再添加与正文一致的 `agents/openai.yaml`。
 4. 只有确有用途时才增加 `scripts/`、`references/` 或 `assets/`，不创建空占位目录。
 5. 在本 README 的技能总览和相应分类中补充用途、输入输出与触发方式。
 6. 本地运行全库校验，提交后等待 GitHub Actions 通过。
@@ -207,7 +199,7 @@ GitHub Actions 会在 push 和 pull request 时重复执行校验。
 
 ## 来源与整理说明
 
-本仓库中的 `yiyan`、`domain-cornerstone`、`company-one-pager`、`laoqian-chart` 和 `event-driven-investment-circles` 根据用户提供的材料及知识星球原帖整理，并针对 Codex Skill 规范重构为可复用工作流。`industry-chain-investment-map` 根据多篇公众号产业链文章归纳其共同研究方法，再抽象为通用 Skill。
+本仓库中的 `yiyan`、`domain-cornerstone`、`company-one-pager`、`laoqian-chart` 和 `event-driven-investment-circles` 根据用户提供的材料及知识星球原帖整理，并按 Agent Skills 规范重构为可复用工作流。`industry-chain-investment-map` 根据多篇公众号产业链文章归纳其共同研究方法，再抽象为通用 Skill。
 
 仓库只保存方法抽象和重新组织后的 Skill 指令，不收录外部文章、研报或付费内容原文。参考链接用于说明方法来源和方便追溯，其中部分页面需要原平台访问权限：
 
